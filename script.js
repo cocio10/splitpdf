@@ -13,16 +13,11 @@ document.getElementById('split-btn').addEventListener('click', async function ()
     const outputDiv = document.getElementById('output');
     outputDiv.innerHTML = '';
 
-    for (let i = 0; i < totalPages; i += 2) {
+    for (let i = 0; i < totalPages; i++) {
         const newPdf = await PDFLib.PDFDocument.create();
         
-        const page1 = await newPdf.copyPages(pdfDoc, [i]);
-        newPdf.addPage(page1[0]);
-
-        if (i + 1 < totalPages) {
-            const page2 = await newPdf.copyPages(pdfDoc, [i + 1]);
-            newPdf.addPage(page2[0]);
-        }
+        const page = await newPdf.copyPages(pdfDoc, [i]);
+        newPdf.addPage(page[0]);
 
         const pdfBytes = await newPdf.save();
         const blob = new Blob([pdfBytes], { type: 'application/pdf' });
